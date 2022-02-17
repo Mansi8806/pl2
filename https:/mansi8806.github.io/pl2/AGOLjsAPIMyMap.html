@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ArcGIS API for JavaScript Tutorial Modification</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.22/"></script>
+  <script>
+
+  require([
+    "esri/config",
+    "esri/Map",
+    "esri/views/MapView",
+
+    "esri/Graphic",
+    "esri/layers/GraphicsLayer"
+
+    ], function(esriConfig,Map, MapView, Graphic, GraphicsLayer) {
+
+  esriConfig.apiKey = "AAPK32ad844a470640f893e0d99284f8a4a9sk7ODfcUUmRDi13WTmYc4Bh7QxxruY5ie7CofX_diQh96MbxlwtMa-Mmwgjed7HB";
+
+  const map = new Map({
+    basemap: "arcgis-topographic" //Basemap layer service
+  });
+
+  const view = new MapView({
+    map: map,
+    center: [79.131001,21.199300], //Longitude, latitude
+    zoom: 5,
+    container: "viewDiv"
+ });
+
+ const graphicsLayer = new GraphicsLayer();
+ map.add(graphicsLayer);
+
+ // Create a polygon geometry
+ const polygon = {
+    type: "polygon",
+    rings: [
+        [78.973602, 15.271287], //Longitude, latitude
+        [83.585042, 21.217970], //Longitude, latitude
+        [81.173768, 22.991733], //Longitude, latitude
+        [79.203633, 21.104497],   //Longitude, latitude
+		    [76.277463, 23.706025], //Longitude, latitude
+        [73.552211, 21.871560],  //Longitude, latitude
+		    [73.552211, 21.871560] //Longitude, latitude
+    ]
+ };
+
+ const simpleFillSymbol = {
+    type: "simple-fill",
+    color: [255, 0, 0, 0.7],  // Orange, opacity 80%
+    outline: {
+        color: [0, 0, 0],
+        width: 2
+    }
+ };
+
+ const polygonGraphic = new Graphic({
+    geometry: polygon,
+    symbol: simpleFillSymbol,
+
+ });
+ graphicsLayer.add(polygonGraphic);
+
+ });
+</script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
