@@ -1,81 +1,81 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>ArcGIS API for JavaScript Tutorial 2: Display your location</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ArcGIS API for JavaScript Tutorial Modification</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.22/"></script>
+  <script>
 
-    <style>
-      html,
-      body,
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
-    </style>
+  require([
+    "esri/config",
+    "esri/Map",
+    "esri/views/MapView",
 
-    <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css">
-    <script src="https://js.arcgis.com/4.22/"></script>
+    "esri/Graphic",
+    "esri/layers/GraphicsLayer"
 
+    ], function(esriConfig,Map, MapView, Graphic, GraphicsLayer) {
 
-    <script>
-      require([
-          "esri/config",
-          "esri/Map",
-          "esri/views/MapView",
-          "esri/widgets/Locate",
+  esriConfig.apiKey = "AAPK32ad844a470640f893e0d99284f8a4a9sk7ODfcUUmRDi13WTmYc4Bh7QxxruY5ie7CofX_diQh96MbxlwtMa-Mmwgjed7HB";
 
-          "esri/widgets/Track",
-          "esri/Graphic"
+  const map = new Map({
+    basemap: "arcgis-topographic" //Basemap layer service
+  });
 
-        ], function(
-            esriConfig,
-            Map,
-            MapView,
-            Locate,
+  const view = new MapView({
+    map: map,
+    center: [79.131001,21.199300], //Longitude, latitude
+    zoom: 5,
+    container: "viewDiv"
+ });
 
-            Track,
-            Graphic
+ const graphicsLayer = new GraphicsLayer();
+ map.add(graphicsLayer);
 
-        ) {
+ // Create a polygon geometry
+ const polygon = {
+    type: "polygon",
+    rings: [
+        [78.973602, 15.271287], //Longitude, latitude
+        [83.585042, 21.217970], //Longitude, latitude
+        [81.173768, 22.991733], //Longitude, latitude
+        [79.203633, 21.104497],   //Longitude, latitude
+		    [76.277463, 23.706025], //Longitude, latitude
+        [73.552211, 21.871560],  //Longitude, latitude
+		    [73.552211, 21.871560] //Longitude, latitude
+    ]
+ };
 
-        esriConfig.apiKey = "AAPK32ad844a470640f893e0d99284f8a4a9sk7ODfcUUmRDi13WTmYc4Bh7QxxruY5ie7CofX_diQh96MbxlwtMa-Mmwgjed7HB";
+ const simpleFillSymbol = {
+    type: "simple-fill",
+    color: [255, 0, 0, 0.7],  // Orange, opacity 80%
+    outline: {
+        color: [0, 0, 0],
+        width: 2
+    }
+ };
 
-        const map = new Map({
-          basemap: "arcgis-navigation"
-        });
+ const polygonGraphic = new Graphic({
+    geometry: polygon,
+    symbol: simpleFillSymbol,
 
-        const view = new MapView({
-          container: "viewDiv",
-          map: map,
-          center: [-40, 28],
-          zoom: 2
-        });
+ });
+ graphicsLayer.add(polygonGraphic);
 
-        const track = new Track({
-          view: view,
-          graphic: new Graphic({
-            symbol: {
-              type: "simple-marker",
-              size: "12px",
-              color: "red",
-              outline: {
-                color: "#efefef",
-                width: "1.5px"
-              }
-            }
-          }),
-          useHeadingEnabled: false
-        });
-        view.ui.add(track, "top-left");
-
-      });
-    </script>
-
-  </head>
-  <body>
-    <div id="viewDiv"></div>
-  </body>
+ });
+</script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
 </html>
